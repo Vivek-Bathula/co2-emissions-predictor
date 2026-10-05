@@ -6,7 +6,7 @@ data to predict CO₂ emissions based on vehicle and fuel characteristics.
 ## 🚀 Live Demo
 
 **Try the deployed application:**\
-https://co2-emissions-predictor-pk4wynfapgoeh3vzcseffx.streamlit.app/
+https://co2-emissions-predictor-xz4shaolbu2yb4fqldc8db.streamlit.app/
 
 ## 📌 Project Overview
 
