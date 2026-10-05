@@ -14,7 +14,7 @@ fuel_type_options = encoder.categories_[2]
 
 
 # -----------------------------
-# App title
+# Page
 # -----------------------------
 
 st.title("🚗 CO₂ Emissions Predictor")
@@ -25,7 +25,7 @@ st.write(
 
 
 # -----------------------------
-# Input fields
+# Inputs
 # -----------------------------
 
 engine_size = st.number_input(
@@ -66,38 +66,34 @@ fuel_type = st.selectbox(
 
 if st.button("Predict CO₂ Emissions"):
 
-    # Validate Engine Size
-    if engine_size < 0.1 or engine_size > 10.0:
-
+    # Explicit validation
+    if not 0.1 <= engine_size <= 10.0:
         st.error(
-            "Please enter a valid Engine Size between 0.1 and 10.0 L."
+            "❌ Engine Size must be between 0.1 and 10.0 L."
         )
+        st.stop()
 
-    # Validate MPG
-    elif mpg < 1.0 or mpg > 100.0:
-
+    if not 1.0 <= mpg <= 100.0:
         st.error(
-            "Please enter a valid Fuel Consumption value between 1 and 100 mpg."
+            "❌ Fuel Consumption must be between 1 and 100 mpg."
         )
+        st.stop()
 
-    else:
+    # Prepare input
+    input_data = pd.DataFrame({
+        "Engine Size(L)": [engine_size],
+        "Fuel Consumption Comb (mpg)": [mpg],
+        "Make": [make],
+        "Vehicle Class": [vehicle_class],
+        "Fuel Type": [fuel_type]
+    })
 
-        # Create input DataFrame
-        input_data = pd.DataFrame({
-            "Engine Size(L)": [engine_size],
-            "Fuel Consumption Comb (mpg)": [mpg],
-            "Make": [make],
-            "Vehicle Class": [vehicle_class],
-            "Fuel Type": [fuel_type]
-        })
+    # Predict only after validation
+    prediction = model.predict(input_data)[0]
 
-        # Make prediction
-        prediction = model.predict(input_data)[0]
-
-        # Display result
-        st.success(
-            f"Predicted CO₂ Emissions: {prediction:.2f} g/km"
-        )
+    st.success(
+        f"Predicted CO₂ Emissions: {prediction:.2f} g/km"
+    )
 
 
 # -----------------------------
@@ -107,5 +103,5 @@ if st.button("Predict CO₂ Emissions"):
 st.markdown("---")
 
 st.caption(
-    "Built by Vivek Bathula |First Machine Learning Project using LinearRegression Algorithm"
+    "Built by Vivek Bathula | First Machine Learning Project using LinearRegression Algorithm"
 )
